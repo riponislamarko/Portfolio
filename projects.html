@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Noir Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Noir</a>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="projects.html" class="active">Projects</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Projects Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <h1>My Projects</h1>
+            <p>Explore my latest work and creative projects</p>
+        </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="projects-page">
+        <div class="container">
+            <div class="projects-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="branding">Branding</button>
+                <button class="filter-btn" data-filter="web">Web Design</button>
+                <button class="filter-btn" data-filter="app">App Design</button>
+            </div>
+            
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-item" data-category="branding">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400" alt="Project 1">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>Brand Identity</h3>
+                                <p>Branding</p>
+                                <a href="single-project.html" class="project-link">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-item" data-category="web">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400" alt="Project 2">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <h3>E-commerce Website</h3>
+                                <p>Web Design</p>
+                                <a href="single-project.html" class="project-link">View Project</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- More projects... -->
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <h3>About Me</h3>
+                    <p>I'm a passionate designer dedicated to creating beautiful and functional digital experiences.</p>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Me</h3>
+                    <p>Email: hello@noir.com</p>
+                    <p>Phone: +1 234 567 890</p>
+                </div>
+                <div class="footer-social">
+                    <h3>Follow Me</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-dribbble"></i></a>
+                        <a href="#"><i class="fab fa-behance"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Noir. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
