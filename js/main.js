@@ -186,12 +186,10 @@ function initTestimonialCarousel() {
     
     // Navigation handlers
     function goToNext() {
-        console.log('goToNext called, current:', currentIndex, 'going to:', currentIndex + 1);
         scrollToIndex(currentIndex + 1);
     }
     
     function goToPrev() {
-        console.log('goToPrev called, current:', currentIndex, 'going to:', currentIndex - 1);
         scrollToIndex(currentIndex - 1);
     }
     
@@ -199,17 +197,13 @@ function initTestimonialCarousel() {
     if (nextBtn && prevBtn) {
         nextBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('Next button clicked, current index:', currentIndex);
             goToNext();
         });
         
         prevBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            console.log('Prev button clicked, current index:', currentIndex);
             goToPrev();
         });
-    } else {
-        console.error('Arrow buttons not found:', { nextBtn, prevBtn });
     }
     
     // Dot navigation
@@ -461,23 +455,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     navToggle.classList.remove('active');
                 }
             });
-        }, {
-            threshold: 0.5 // Trigger when 50% of the element is visible
-        });
-
-        skillBars.forEach(bar => {
-            observer.observe(bar);
         });
     }
-
-    animateSkillBars();
-
-    // Re-run animations when navigating back to the page
-    window.addEventListener('pageshow', (event) => {
-        if (event.persisted) {
-            animateSkillBars();
-        }
-    });
 
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -499,31 +478,74 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Add active class to current section in navigation on scroll
+    // Enhanced navigation highlighting with smooth transitions
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-menu .nav-link');
 
     const highlightNav = () => {
         let current = '';
         const headerOffset = document.querySelector('.navbar').offsetHeight;
+        const scrollPosition = window.pageYOffset + headerOffset + 100; // Better offset
 
         sections.forEach(section => {
-            const sectionTop = section.offsetTop - headerOffset - 50;
-            if (window.pageYOffset >= sectionTop) {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionBottom = sectionTop + sectionHeight;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
                 current = section.getAttribute('id');
             }
         });
 
         navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').includes(current)) {
-                link.classList.add('active');
+            const href = link.getAttribute('href');
+            if (href.includes(current)) {
+                if (!link.classList.contains('active')) {
+                    link.classList.add('active');
+                }
+            } else {
+                link.classList.remove('active');
             }
         });
     };
 
-    window.addEventListener('scroll', highlightNav);
+    // Throttled scroll event for better performance
+    let ticking = false;
+    const updateNav = () => {
+        highlightNav();
+        updateHeaderBackground();
+        ticking = false;
+    };
+
+    const requestTick = () => {
+        if (!ticking) {
+            requestAnimationFrame(updateNav);
+            ticking = true;
+        }
+    };
+
+    // Sticky header background
+    function updateHeaderBackground() {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('sticky');
+            console.log('🚀 Header is now STICKY - Background should be visible!');
+        } else {
+            navbar.classList.remove('sticky');
+            console.log('✨ Header is TRANSPARENT - No background');
+        }
+    }
+
+    window.addEventListener('scroll', requestTick, { passive: true });
     highlightNav(); // Initial call
+    updateHeaderBackground(); // Initial call
+    
+    // Test if header function is working
+    console.log('🔍 Header sticky function initialized');
+    setTimeout(() => {
+        console.log('🔍 Testing header function...');
+        updateHeaderBackground();
+    }, 1000);
 
     // Contact Form submission
     const contactForm = document.getElementById('contactForm');
@@ -576,5 +598,37 @@ document.addEventListener('DOMContentLoaded', () => {
         el.classList.add('fade-in-initial');
         observer.observe(el);
     });
+
+    // Simple image scrolling fix
+    function fixImageScrolling() {
+        const workItems = document.querySelectorAll('.work-item');
+        
+        workItems.forEach(item => {
+            const image = item.querySelector('.work-image');
+            if (!image) return;
+            
+            // Wait for image to load
+            if (image.complete) {
+                checkImageHeight(item, image);
+            } else {
+                image.addEventListener('load', () => {
+                    checkImageHeight(item, image);
+                });
+            }
+        });
+    }
+    
+    function checkImageHeight(item, image) {
+        const containerHeight = 240; // Fixed container height
+        const imageHeight = image.naturalHeight;
+        
+        // If image is shorter than container, disable scrolling
+        if (imageHeight <= containerHeight) {
+            item.classList.add('no-scroll');
+        }
+    }
+    
+    // Initialize image scrolling fix
+    fixImageScrolling();
 
 });

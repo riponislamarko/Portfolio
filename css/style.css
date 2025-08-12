@@ -1,4 +1,4 @@
-/* Theme Variables */
+/* Theme Variables - Noir Inspired */
 :root {
   /* Light Theme */
   --bg-color: #ffffff;
@@ -7,22 +7,22 @@
   --border-color: rgba(0, 0, 0, 0.1);
   --card-bg: #f8f9fa;
   --card-hover: #e9ecef;
-  --accent-color: #0d6efd;
-  --accent-hover: #0b5ed7;
+  --accent-color: #6366f1;
+  --accent-hover: #4f46e5;
   --nav-bg: rgba(255, 255, 255, 0.95);
   --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   --overlay: rgba(0, 0, 0, 0.03);
   
-  /* Dark Theme (default) */
-  --dark-bg-color: #0a0a0a;
-  --dark-text-color: #f8f9fa;
-  --dark-text-secondary: rgba(255, 255, 255, 0.85);
-  --dark-border-color: rgba(255, 255, 255, 0.1);
-  --dark-card-bg: rgba(255, 255, 255, 0.02);
-  --dark-card-hover: rgba(255, 255, 255, 0.05);
-  --dark-nav-bg: rgba(10, 10, 10, 0.95);
-  --dark-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  --dark-overlay: rgba(255, 255, 255, 0.03);
+  /* Dark Theme (default) - Noir Inspired */
+  --dark-bg-color: #0f0f0f;
+  --dark-text-color: #f5f5f5;
+  --dark-text-secondary: rgba(245, 245, 245, 0.8);
+  --dark-border-color: rgba(99, 102, 241, 0.2);
+  --dark-card-bg: rgba(99, 102, 241, 0.05);
+  --dark-card-hover: rgba(99, 102, 241, 0.1);
+  --dark-nav-bg: rgba(15, 15, 15, 0.95);
+  --dark-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --dark-overlay: rgba(99, 102, 241, 0.05);
 
   /* Default to dark theme */
   --current-bg: var(--dark-bg-color);
@@ -47,6 +47,33 @@
   --current-nav-bg: var(--nav-bg);
   --current-shadow: var(--shadow);
   --current-overlay: var(--overlay);
+}
+
+/* Light mode specific overrides for hero and navigation */
+[data-theme="light"] .hero-title,
+[data-theme="light"] .hero-subtitle,
+[data-theme="light"] .btn-primary,
+[data-theme="light"] .logo,
+[data-theme="light"] .nav-link {
+  color: #ffffff !important;
+}
+
+/* Sticky header in light mode - text colors */
+[data-theme="light"] .navbar.sticky .logo,
+[data-theme="light"] .navbar.sticky .nav-link {
+  color: var(--text-color) !important;
+}
+
+[data-theme="light"] .btn-primary {
+  border-color: #ffffff !important;
+}
+
+[data-theme="light"] .btn-primary::before {
+  background: #ffffff !important;
+}
+
+[data-theme="light"] .btn-primary:hover {
+  color: var(--current-bg) !important;
 }
 
 /* Dark theme */
@@ -95,6 +122,7 @@ body {
     background-color: var(--current-bg);
     overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: 300;
 }
 
 .container {
@@ -105,29 +133,58 @@ body {
 
 /* Navigation */
 .navbar {
-    background: var(--current-nav-bg);
-    backdrop-filter: blur(10px);
-    padding: 1rem 0;
+    background: transparent;
+    backdrop-filter: none;
+    padding: 1.5rem 0;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
-    border-bottom: 1px solid var(--current-border);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    border-bottom: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
+
+.navbar.sticky,
+body .navbar.sticky,
+html body .navbar.sticky {
+    background: #000000 !important;
+    backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Sticky header in light mode */
+[data-theme="light"] .navbar.sticky {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Sticky header in dark mode */
+[data-theme="dark"] .navbar.sticky {
+    background: rgba(15, 15, 15, 0.95) !important;
+    border-bottom: 1px solid rgba(99, 102, 241, 0.2) !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+
 
 .navbar .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    z-index: 2;
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--current-text);
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--accent-color);
     text-decoration: none;
-    letter-spacing: -0.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .nav-menu {
@@ -156,14 +213,17 @@ body {
     bottom: -5px;
     left: 0;
     width: 0;
-    height: 1px;
-    background: var(--current-text);
-    transition: width 0.3s ease;
+    height: 2px;
+    background: var(--accent-color);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scaleX(0);
+    transform-origin: left center;
 }
 
 .nav-link:hover::after,
 .nav-link.active::after {
     width: 100%;
+    transform: scaleX(1);
 }
 
 .nav-toggle {
@@ -238,6 +298,34 @@ body {
     justify-content: center;
     background: var(--current-bg);
     position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hero-bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(15, 15, 15, 0.85), rgba(15, 15, 15, 0.6));
+    z-index: 2;
 }
 
 .hero::before {
@@ -254,23 +342,34 @@ body {
     text-align: center;
     max-width: 800px;
     position: relative;
-    z-index: 1;
+    z-index: 3;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 300;
-    margin-bottom: 1.5rem;
-    letter-spacing: -1px;
-    line-height: 1.2;
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 200;
+    margin-bottom: 2rem;
+    letter-spacing: 3px;
+    line-height: 1.1;
+    color: var(--current-text);
+    text-transform: uppercase;
 }
 
 .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: var(--current-text-secondary);
     margin-bottom: 3rem;
-    line-height: 1.6;
-    font-weight: 400;
+    line-height: 1.8;
+    font-weight: 300;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .btn {
@@ -290,6 +389,7 @@ body {
 .btn-primary {
     background: transparent;
     color: var(--current-text);
+    border-color: var(--current-text);
 }
 
 .btn-primary::before {
@@ -315,11 +415,13 @@ body {
 
 /* Section Titles */
 .section-title {
-    font-size: 2.5rem;
-    font-weight: 300;
+    font-size: 3rem;
+    font-weight: 200;
     margin-bottom: 4rem;
     text-align: center;
-    letter-spacing: -0.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--current-text);
 }
 
 /* Brands Carousel */
@@ -638,16 +740,31 @@ body {
 
 .work-image {
     width: 100%;
-    height: 100%;
+    height: auto;
+    min-height: 100%;
     object-fit: cover;
-    transition: transform 8s ease-in-out;
+    transition: transform 6s ease-in-out;
     transform: translateY(0);
     will-change: transform;
+    cursor: pointer;
+}
+
+/* Pause scrolling when not hovering */
+.work-item:not(:hover) .work-image {
+    transition: transform 0.3s ease-out;
 }
 
 .work-item:hover .work-image {
+    /* Smart scrolling - only scroll what's needed */
     transform: translateY(calc(-100% + 240px));
 }
+
+/* Disable scrolling for images that don't need it */
+.work-item.no-scroll .work-image:hover {
+    transform: translateY(0) !important;
+}
+
+
 
 .work-content {
     padding: 1.75rem;
@@ -989,15 +1106,16 @@ body {
 
 .about-content {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
     align-items: center;
 }
 
 .about-image {
     position: relative;
-    max-width: 400px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0;
+    justify-self: end;
 }
 
 .about-image-wrapper {
@@ -1011,8 +1129,15 @@ body {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 12px;
+    border-radius: 16px;
     transition: transform 0.3s ease;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.profile-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px;
 }
 
 .about-image:hover img {
@@ -1252,6 +1377,17 @@ body {
         font-size: 2rem;
     }
     
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .about-image {
+        justify-self: center;
+        max-width: 300px;
+    }
+    
     .about-cta {
         justify-content: center;
     }
@@ -1263,6 +1399,43 @@ body {
 
 .about-text p:last-child {
     margin-bottom: 0;
+}
+
+/* Section Divider */
+.section-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+    position: relative;
+}
+
+.divider-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--current-border), transparent);
+    flex: 1;
+    max-width: 200px;
+}
+
+.divider-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: var(--current-card-bg);
+    border: 2px solid var(--current-border);
+    border-radius: 50%;
+    margin: 0 2rem;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.divider-icon:hover {
+    transform: scale(1.1);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
 }
 
 /* Contact Section */
