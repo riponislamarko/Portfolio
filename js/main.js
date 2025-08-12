@@ -529,10 +529,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const navbar = document.querySelector('.navbar');
         if (window.scrollY > 50) {
             navbar.classList.add('sticky');
-            console.log('🚀 Header is now STICKY - Background should be visible!');
         } else {
             navbar.classList.remove('sticky');
-            console.log('✨ Header is TRANSPARENT - No background');
         }
     }
 
@@ -541,9 +539,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateHeaderBackground(); // Initial call
     
     // Test if header function is working
-    console.log('🔍 Header sticky function initialized');
     setTimeout(() => {
-        console.log('🔍 Testing header function...');
         updateHeaderBackground();
     }, 1000);
 
