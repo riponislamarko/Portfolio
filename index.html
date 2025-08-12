@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio of Md Ripon Islam - Front End Web Developer">
-    <title>Md Ripon Islam - Front End Developer</title>
+    <meta name="description" content="Portfolio of Md Ripon Islam - WordPress & Full-Stack Developer">
+    <title>Md Ripon Islam - WordPress & Full-Stack Developer</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navigation -->
@@ -16,67 +17,454 @@
             <div class="nav-toggle" id="navToggle">
                 <span></span>
                 <span></span>
+                <span></span>
             </div>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="projects.html">Projects</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li class="theme-toggle-container">
+                    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                        <span class="theme-icon sun-icon">
+                            <i class="fas fa-sun"></i>
+                        </span>
+                        <span class="theme-icon moon-icon">
+                            <i class="fas fa-moon"></i>
+                        </span>
+                    </button>
+                </li>
             </ul>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="home">
         <div class="container">
-            <h1>Front End Web Developer</h1>
-            <p>Hi, I'm Ripon, a passionate Front End Developer dedicated to creating beautiful and functional web experiences.</p>
-            <a href="#contact" class="btn">Get In touch</a>
+            <div class="hero-content">
+                <h1 class="hero-title">WordPress & Full-Stack Developer</h1>
+                <p class="hero-subtitle">Hi, I'm Ripon, a highly skilled WordPress developer with expertise in full-stack web development, creating responsive, dynamic, and scalable websites.</p>
+                <a href="#contact" class="btn btn-primary">Get In Touch</a>
+            </div>
         </div>
+    </section>
+
+    <!-- Brands Carousel -->
+    <section class="brands-carousel">
+        <div class="container">
+            <div class="brands-container">
+                <div class="brands-track">
+                    <!-- Project Logos - Original Set -->
+                    <div class="brand-item">
+                        <img src="img/logo/binnifood-logo.png" alt="BinniFood" class="brand-logo">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/logo/itnut-logo.png" alt="ITNut Hosting" class="brand-logo">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/logo/dripdrop-logo.png" alt="DripDrop BD" class="brand-logo">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/logo/khuje-logo.png" alt="Khuje" class="brand-logo">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/logo/flarko-logo.png" alt="Flarko" class="brand-logo">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/logo/onedbc-logo.png" alt="OneDBC" class="brand-logo">
+                    </div>
+                    
+                    <!-- Duplicated items for seamless loop -->
+                    <div class="brand-item">
+                        <img src="img/logo/binnifood-logo.png" alt="BinniFood" class="brand-logo">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/logo/itnut-logo.png" alt="ITNut Hosting" class="brand-logo">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/logo/dripdrop-logo.png" alt="DripDrop BD" class="brand-logo">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/logo/khuje-logo.png" alt="Khuje" class="brand-logo">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/logo/flarko-logo.png" alt="Flarko" class="brand-logo">
+                    </div>
+                    <div class="brand-item">
+                        <img src="img/logo/onedbc-logo.png" alt="OneDBC" class="brand-logo">
+                    </div>
+                </div>
+            </div>
     </section>
 
     <!-- Services Section -->
     <section class="services" id="services">
         <div class="container">
-            <h2>Services</h2>
+            <h2 class="section-title">Services</h2>
             <div class="services-grid">
                 <div class="service-item">
-                    <span class="service-number">01</span>
-                    <h3>Front End Development</h3>
-                    <p>Building responsive and interactive websites using modern web technologies like HTML5, CSS3, and JavaScript.</p>
+                    <div class="service-icon">
+                        <i class="fab fa-wordpress"></i>
+                    </div>
+                    <span class="service-number">WordPress</span>
+                    <h3>WordPress Development</h3>
+                    <p>Custom WordPress themes, plugins, and e-commerce solutions tailored to meet diverse client needs with focus on performance and security.</p>
+                    <a href="#contact" class="service-link">Learn more <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="service-item">
-                    <span class="service-number">02</span>
+                    <div class="service-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <span class="service-number">Full-Stack</span>
+                    <h3>Web Development</h3>
+                    <p>Complete web solutions using HTML, CSS, JavaScript, PHP, and MySQL for both front-end and back-end development.</p>
+                    <a href="#contact" class="service-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <span class="service-number">E-commerce</span>
+                    <h3>Shopify & WooCommerce</h3>
+                    <p>Custom store development and customization using Shopify's Liquid and WooCommerce for scalable e-commerce solutions.</p>
+                    <a href="#contact" class="service-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="service-item">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <span class="service-number">Responsive</span>
                     <h3>Responsive Design</h3>
-                    <p>Creating websites that look and function perfectly on all devices and screen sizes.</p>
-                </div>
-                <div class="service-item">
-                    <span class="service-number">03</span>
-                    <h3>JavaScript Development</h3>
-                    <p>Building interactive web applications with clean, efficient, and maintainable JavaScript code.</p>
-                </div>
-                <div class="service-item">
-                    <span class="service-number">04</span>
-                    <h3>Bootstrap Framework</h3>
-                    <p>Leveraging Bootstrap to create beautiful, responsive layouts quickly and efficiently.</p>
+                    <p>Creating beautiful, functional websites optimized for all devices and screen sizes with a mobile-first approach.</p>
+                    <a href="#contact" class="service-link">Learn more <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Recent Work Section -->
-    <section class="recent-work" id="work">
+    <section class="recent-work" id="projects">
         <div class="container">
-            <h2>Recent Work</h2>
+            <h2 class="section-title">Recent Work</h2>
             <div class="work-grid">
                 <div class="work-item">
-                    <img src="https://via.placeholder.com/600x800" alt="Project 1">
-                    <div class="work-overlay">
-                        <h3>Branding</h3>
-                        <p>Glasses of Cocktail</p>
+                    <div class="work-image-container">
+                        <img src="img/binnifood.png" alt="BinniFood Screenshot" class="work-image">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">E-commerce</span>
+                        <h3>BinniFood.com</h3>
+                        <p>Food delivery platform with custom WordPress development, featuring real-time order tracking, restaurant management, and seamless payment integration.</p>
+                        <a href="https://binnifood.com" target="_blank" rel="noopener noreferrer" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
-                <!-- More work items will be added here -->
+                <div class="work-item">
+                    <div class="work-image-container">
+                        <img src="img/itnuthosting.png" alt="ITNut Hosting Screenshot" class="work-image">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">Web Hosting</span>
+                        <h3>ITNutHosting.com</h3>
+                        <p>Professional hosting service website with custom client area, server status monitoring, and integrated billing system.</p>
+                        <a href="https://itnuthosting.com" target="_blank" rel="noopener noreferrer" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image-container">
+                        <img src="img/dripdropbd.png" alt="DripDrop BD Screenshot" class="work-image">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">E-commerce</span>
+                        <h3>DripDropBD.com</h3>
+                        <p>Fashion e-commerce platform with modern design, product customization, and advanced filtering options.</p>
+                        <a href="https://dripdropbd.com" target="_blank" rel="noopener noreferrer" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image-container">
+                        <img src="img/khuje.png" alt="Khuje Screenshot" class="work-image">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">Directory</span>
+                        <h3>Khuje.com</h3>
+                        <p>Local business directory with advanced search, business listings, and review system for better user engagement.</p>
+                        <a href="https://khuje.com" target="_blank" rel="noopener noreferrer" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image-container">
+                        <img src="img/flarko.png" alt="Flarko Screenshot" class="work-image">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">Portfolio</span>
+                        <h3>Flarko.com</h3>
+                        <p>Creative portfolio website with interactive elements, smooth animations, and a clean, modern design.</p>
+                        <a href="https://flarko.com" target="_blank" rel="noopener noreferrer" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image-container">
+                        <img src="img/onedbc.png" alt="OneDBC Screenshot" class="work-image">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">Corporate</span>
+                        <h3>OneDBC.com</h3>
+                        <p>Corporate website with professional design, service showcases, and client portfolio with case studies.</p>
+                        <a href="https://onedbc.com" target="_blank" rel="noopener noreferrer" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="work-grid">
+                <div class="work-item">
+                    <div class="work-image">
+                        <img src="img/ruperkotha.png" alt="RuperKotha">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">Blog</span>
+                        <h3>RuperKotha.com</h3>
+                        <p>Content-rich blog platform with custom CMS features</p>
+                        <a href="https://ruperkotha.com" target="_blank" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image">
+                        <img src="img/nutdigital.png" alt="NutDigital">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">Agency</span>
+                        <h3>NutDigital.com</h3>
+                        <p>Digital agency website with modern animations</p>
+                        <a href="https://nutdigital.com" target="_blank" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image">
+                        <img src="img/netkotha.png" alt="NetKotha">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">Social</span>
+                        <h3>NetKotha.com</h3>
+                        <p>Social networking platform with custom features</p>
+                        <a href="https://netkotha.com" target="_blank" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image">
+                        <img src="img/techie.png" alt="Techie">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">Tech Blog</span>
+                        <h3>Techie.com.bd</h3>
+                        <p>Technology blog with advanced content management</p>
+                        <a href="https://techie.com.bd" target="_blank" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image">
+                        <img src="img/riham.png" alt="Riham">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">Personal</span>
+                        <h3>Riham.me</h3>
+                        <p>Personal portfolio with creative design elements</p>
+                        <a href="https://riham.me" target="_blank" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="work-item">
+                    <div class="work-image">
+                        <img src="img/hostdiggy.png" alt="HostDiggy">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">Hosting</span>
+                        <h3>HostDiggy.com</h3>
+                        <p>Web hosting service with comprehensive features</p>
+                        <a href="https://hostdiggy.com" target="_blank" class="work-link">View Project <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Clients Say</h2>
+            <div class="testimonials-container" tabindex="0" aria-label="Testimonials carousel">
+                <div class="testimonials-track">
+                    <!-- Duplicate items for infinite loop effect -->
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left" aria-hidden="true"></i>
+                                <p>Ripon delivered exceptional work on our WordPress project. His attention to detail and problem-solving skills were impressive. The site's performance improved significantly after his optimizations.</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John D." width="56" height="56" loading="lazy">
+                                </div>
+                                <div class="author-info">
+                                    <h4>John D.</h4>
+                                    <span>CEO, TechCorp</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left" aria-hidden="true"></i>
+                                <p>Working with Ripon was a great experience. His Shopify customization skills transformed our online store. He was always responsive and went above and beyond to ensure we were satisfied.</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah M." width="56" height="56" loading="lazy">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Sarah M.</h4>
+                                    <span>Founder, StyleHub</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left" aria-hidden="true"></i>
+                                <p>Ripon's full-stack development skills are top-notch. He built a custom web application for our business that has streamlined our operations. His communication throughout the project was excellent.</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Michael T." width="56" height="56" loading="lazy">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Michael T.</h4>
+                                    <span>CTO, InnovateX</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Duplicate items for infinite loop -->
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left" aria-hidden="true"></i>
+                                <p>Ripon delivered exceptional work on our WordPress project. His attention to detail and problem-solving skills were impressive. The site's performance improved significantly after his optimizations.</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="John D." width="56" height="56" loading="lazy">
+                                </div>
+                                <div class="author-info">
+                                    <h4>John D.</h4>
+                                    <span>CEO, TechCorp</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left" aria-hidden="true"></i>
+                                <p>Working with Ripon was a great experience. His Shopify customization skills transformed our online store. He was always responsive and went above and beyond to ensure we were satisfied.</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah M." width="56" height="56" loading="lazy">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Sarah M.</h4>
+                                    <span>Founder, StyleHub</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-item">
+                        <div class="testimonial-content">
+                            <div class="testimonial-quote">
+                                <i class="fas fa-quote-left" aria-hidden="true"></i>
+                                <p>Ripon's full-stack development skills are top-notch. He built a custom web application for our business that has streamlined our operations. His communication throughout the project was excellent.</p>
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Michael T." width="56" height="56" loading="lazy">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Michael T.</h4>
+                                    <span>CTO, InnovateX</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            
+            <div class="testimonial-navigation">
+                <button class="testimonial-nav prev" aria-label="Previous testimonial">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="testimonial-dots"></div>
+                <button class="testimonial-nav next" aria-label="Next testimonial">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">About Me</h2>
+                    <p>Md Ripon Islam is a highly skilled and experienced WordPress developer with a strong background in full-stack web development. With expertise spanning HTML, CSS, JavaScript, PHP, MySQL, Liquid, and Shopify, he specializes in building responsive, dynamic, and scalable websites tailored to meet diverse client needs.</p>
+                    <p>With a proven track record in developing custom WordPress themes, plugins, and e-commerce solutions, Ripon combines technical excellence with a deep understanding of user experience and web performance. His proficiency in both front-end and back-end technologies allows him to deliver seamless, high-quality solutions that are optimized for functionality, security, and speed.</p>
+                    <p>Whether working on complex CMS implementations, Shopify store customizations, or full website builds from scratch, Ripon brings dedication, efficiency, and a results-driven mindset to every project.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2 class="section-title">Contact Me</h2>
+                    <p class="contact-subtitle">Elevate Your Brand Experience to the Next Level</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:riponislamarko@gmail.com">riponislamarko@gmail.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-github"></i>
+                            <a href="https://github.com/riponislamarko" target="_blank">github.com/riponislamarko</a>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Bangladesh</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -85,27 +473,17 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-about">
-                    <h3>About Me</h3>
-                    <p>I'm a passionate Front End Developer from Bangladesh, dedicated to creating beautiful and functional web experiences.</p>
+                <div class="footer-left">
+                    <p>&copy; 2024 Md Ripon Islam. All rights reserved.</p>
                 </div>
-                <div class="footer-contact">
-                    <h3>Contact Me</h3>
-                    <p>Email: riponislamarko@gmail.com</p>
-                    <p>Location: Bangladesh</p>
-                </div>
-                <div class="footer-social">
-                    <h3>Follow Me</h3>
+                <div class="footer-right">
                     <div class="social-links">
-                        <a href="#"><i class="fab fa-dribbble"></i></a>
-                        <a href="#"><i class="fab fa-behance"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/riponislamarko" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-dribbble"></i></a>
                     </div>
                 </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2023 Md Ripon Islam. All rights reserved.</p>
             </div>
         </div>
     </footer>
