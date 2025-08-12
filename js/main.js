@@ -82,69 +82,101 @@ function initTestimonialCarousel() {
     const prevBtn = document.querySelector('.testimonial-nav.prev');
     const nextBtn = document.querySelector('.testimonial-nav.next');
     
-    if (!container || !items.length) return;
+    if (!container || !items.length || !prevBtn || !nextBtn) {
+        console.log('Missing elements:', { container, items: items.length, prevBtn, nextBtn });
+        return;
+    }
     
     // Clear existing dots
     dotsContainer.innerHTML = '';
     
     let currentIndex = 0;
     let isAnimating = false;
-    let itemWidth = items[0].offsetWidth + 32; // Width + gap
     
-    // Create dots (only for unique testimonials, not duplicates)
-    const uniqueTestimonialCount = items.length / 2; // Since we have duplicates
-    for (let i = 0; i < uniqueTestimonialCount; i++) {
+    // Calculate how many items to show based on screen size
+    function getItemsPerView() {
+        const width = window.innerWidth;
+        if (width < 768) return 1;
+        if (width < 1024) return 2;
+        return 3;
+    }
+    
+    // Get unique testimonial count (half of total since we have duplicates)
+    const uniqueTestimonialCount = items.length / 2;
+    const itemsPerView = getItemsPerView();
+    
+    // For 3 items, we only need 1 slide (show all at once)
+    // For 2 items, we need 2 slides (show 2, then slide to show the 3rd + 1st)
+    // For 1 item, we need 3 slides (one for each testimonial)
+    const totalSlides = uniqueTestimonialCount;
+    for (let i = 0; i < totalSlides; i++) {
         const dot = document.createElement('button');
         dot.classList.add('testimonial-dot');
         if (i === 0) dot.classList.add('active');
-        dot.setAttribute('aria-label', `Go to testimonial ${i + 1}`);
+        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
         dot.dataset.index = i;
         dotsContainer.appendChild(dot);
     }
     
+    // Get dots after they're created
     const dots = document.querySelectorAll('.testimonial-dot');
     
     // Update active dot and navigation state
     function updateUI() {
-        // Calculate visible index (accounting for duplicates)
-        const visibleIndex = currentIndex % uniqueTestimonialCount;
+        const dots = document.querySelectorAll('.testimonial-dot');
         
         // Update dots
         dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === visibleIndex);
-            dot.setAttribute('aria-current', i === visibleIndex ? 'true' : 'false');
+            dot.classList.toggle('active', i === currentIndex);
+            dot.setAttribute('aria-current', i === currentIndex ? 'true' : 'false');
         });
         
-        // Update navigation buttons state
+        // Navigation buttons are always enabled for infinite scroll
         prevBtn.disabled = isAnimating;
         nextBtn.disabled = isAnimating;
+        
+        // Add visual feedback for disabled state
+        prevBtn.style.opacity = prevBtn.disabled ? '0.5' : '1';
+        nextBtn.style.opacity = nextBtn.disabled ? '0.5' : '1';
     }
     
     // Scroll to specific index
     function scrollToIndex(index, instant = false) {
-        if (isAnimating) return;
+        if (isAnimating && !instant) return;
         
         isAnimating = true;
-        currentIndex = index;
+        
+        // Handle infinite loop - if we go beyond, wrap to beginning
+        if (index >= uniqueTestimonialCount) {
+            currentIndex = 0;
+        } else if (index < 0) {
+            currentIndex = uniqueTestimonialCount - 1;
+        } else {
+            currentIndex = index;
+        }
         
         // Calculate scroll position
-        const scrollPosition = currentIndex * itemWidth;
+        // Each testimonial takes up (100% / itemsPerView) of the container width
+        const containerWidth = container.offsetWidth;
+        const slideWidth = containerWidth / itemsPerView;
+        const scrollPosition = currentIndex * slideWidth;
         
-        track.style.scrollBehavior = instant ? 'auto' : 'smooth';
-        track.scrollLeft = scrollPosition;
+        // Use CSS transform for smoother animation
+        track.style.transition = instant ? 'none' : 'transform 0.5s ease-in-out';
+        track.style.transform = `translateX(-${scrollPosition}px)`;
         
-        // If we've scrolled to the duplicate set, instantly jump to the original
+        // Handle animation end
         if (!instant) {
-            const onScroll = () => {
-                if (currentIndex >= uniqueTestimonialCount) {
-                    currentIndex = currentIndex % uniqueTestimonialCount;
-                    track.removeEventListener('scroll', onScroll);
-                    scrollToIndex(currentIndex, true);
-                }
+            const onTransitionEnd = () => {
                 isAnimating = false;
+                track.removeEventListener('transitionend', onTransitionEnd);
             };
+            track.addEventListener('transitionend', onTransitionEnd, { once: true });
             
-            track.addEventListener('scroll', onScroll, { once: true });
+            // Fallback timeout in case transitionend doesn't fire
+            setTimeout(() => {
+                isAnimating = false;
+            }, 600);
         } else {
             isAnimating = false;
         }
@@ -154,31 +186,45 @@ function initTestimonialCarousel() {
     
     // Navigation handlers
     function goToNext() {
+        console.log('goToNext called, current:', currentIndex, 'going to:', currentIndex + 1);
         scrollToIndex(currentIndex + 1);
     }
     
     function goToPrev() {
-        if (currentIndex <= 0) {
-            scrollToIndex(uniqueTestimonialCount - 1);
-        } else {
-            scrollToIndex(currentIndex - 1);
-        }
+        console.log('goToPrev called, current:', currentIndex, 'going to:', currentIndex - 1);
+        scrollToIndex(currentIndex - 1);
     }
     
-    // Event listeners
-    nextBtn.addEventListener('click', goToNext);
-    prevBtn.addEventListener('click', goToPrev);
+    // Event listeners for arrow buttons
+    if (nextBtn && prevBtn) {
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Next button clicked, current index:', currentIndex);
+            goToNext();
+        });
+        
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Prev button clicked, current index:', currentIndex);
+            goToPrev();
+        });
+    } else {
+        console.error('Arrow buttons not found:', { nextBtn, prevBtn });
+    }
     
     // Dot navigation
-    dots.forEach(dot => {
-        dot.addEventListener('click', (e) => {
-            e.preventDefault();
-            const index = parseInt(dot.dataset.index);
-            if (index !== currentIndex % uniqueTestimonialCount) {
-                scrollToIndex(index);
-            }
+    function setupDotNavigation() {
+        const dots = document.querySelectorAll('.testimonial-dot');
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                e.preventDefault();
+                const index = parseInt(dot.dataset.index);
+                if (index !== currentIndex) {
+                    scrollToIndex(index);
+                }
+            });
         });
-    });
+    }
     
     // Handle keyboard navigation
     container.addEventListener('keydown', (e) => {
@@ -197,8 +243,10 @@ function initTestimonialCarousel() {
         }
     });
     
-    // Auto-scroll
-    let autoScroll = setInterval(goToNext, 5000);
+    // Auto-scroll with proper looping
+    let autoScroll = setInterval(() => {
+        goToNext();
+    }, 5000);
     
     // Pause auto-scroll on hover
     const pauseAutoScroll = () => {
@@ -224,20 +272,25 @@ function initTestimonialCarousel() {
     const handleResize = () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            itemWidth = items[0].offsetWidth + 32;
-            scrollToIndex(currentIndex % uniqueTestimonialCount, true);
+            // Recalculate items per view
+            const newItemsPerView = getItemsPerView();
+            if (newItemsPerView !== itemsPerView) {
+                // Reinitialize if items per view changed
+                initTestimonialCarousel();
+                return;
+            }
+            
+            // Just update position for same layout
+            scrollToIndex(currentIndex, true);
         }, 250);
     };
     
     window.addEventListener('resize', handleResize);
     
     // Initialize
+    setupDotNavigation();
+    scrollToIndex(0, true);
     updateUI();
-    
-    // Make dots focusable for keyboard navigation
-    dots.forEach(dot => {
-        dot.setAttribute('tabindex', '0');
-    });
 }
 
 /**
