@@ -302,6 +302,18 @@ html body .navbar.sticky {
     text-align: center;
 }
 
+.hero .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem 0;
+    /* Debug: Ensure brands carousel is visible */
+    position: relative;
+    z-index: 3;
+}
+
 .hero-background {
     position: absolute;
     top: 0;
@@ -343,7 +355,7 @@ html body .navbar.sticky {
     max-width: 800px;
     position: relative;
     z-index: 3;
-    margin: 200px auto;
+    margin: 150px auto 0 auto;
     padding: 0 2rem;
     display: flex;
     flex-direction: column;
@@ -426,42 +438,36 @@ html body .navbar.sticky {
 
 /* Brands Carousel */
 .brands-carousel {
-    padding: 3rem 0;
-    background: var(--current-bg);
+    padding: 2rem 0 0 0;
     overflow: hidden;
     position: relative;
-}
-
-.brands-carousel::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--current-border), transparent);
+    margin-top: 3rem;
+    z-index: 3;
+    min-height: 100px;
 }
 
 .brands-container {
     position: relative;
     width: 100%;
     overflow: hidden;
+    min-height: 80px;
 }
 
 .brands-track {
     display: flex;
     align-items: center;
     gap: 4rem;
-    padding: 1.5rem 0;
+    padding: 1rem 0;
     width: max-content;
     will-change: transform;
+    min-height: 60px;
 }
 
 .brand-item {
     flex: 0 0 auto;
-    opacity: 0.6;
+    opacity: 0.8;
     transition: all 0.3s ease;
-    filter: grayscale(100%);
+    filter: grayscale(100%) brightness(1.2);
     transform: translateZ(0);
     backface-visibility: hidden;
     perspective: 1000px;
@@ -469,7 +475,7 @@ html body .navbar.sticky {
 
 .brand-item:hover {
     opacity: 1;
-    filter: grayscale(0%);
+    filter: grayscale(0%) brightness(1.5);
     transform: scale(1.05);
 }
 
@@ -480,10 +486,9 @@ html body .navbar.sticky {
     max-width: 150px;
     display: block;
 }
-
 /* Services Section */
 .services {
-    padding: 6rem 1.5rem;
+    padding: 0 1.5rem;
     background: var(--current-bg);
 }
 
@@ -568,18 +573,6 @@ html body .navbar.sticky {
     border-color: var(--accent-color);
 }
 
-.service-number {
-    display: inline-block;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--accent-color);
-    background: var(--current-overlay);
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.5px;
-    align-self: flex-start;
-}
 
 .service-item h3 {
     font-size: 1.5rem;
@@ -690,19 +683,9 @@ html body .navbar.sticky {
 
 /* Recent Work Section */
 .recent-work {
-    padding: 120px 0;
+    padding: 0;
     background: var(--current-bg);
     position: relative;
-}
-
-.recent-work::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--current-border), transparent);
 }
 
 .work-grid {
@@ -743,28 +726,8 @@ html body .navbar.sticky {
     height: auto;
     min-height: 100%;
     object-fit: cover;
-    transition: transform 6s ease-in-out;
-    transform: translateY(0);
-    will-change: transform;
     cursor: pointer;
 }
-
-/* Pause scrolling when not hovering */
-.work-item:not(:hover) .work-image {
-    transition: transform 0.3s ease-out;
-}
-
-.work-item:hover .work-image {
-    /* Smart scrolling - only scroll what's needed */
-    transform: translateY(calc(-100% + 240px));
-}
-
-/* Disable scrolling for images that don't need it */
-.work-item.no-scroll .work-image:hover {
-    transform: translateY(0) !important;
-}
-
-
 
 .work-content {
     padding: 1.75rem;
@@ -773,19 +736,17 @@ html body .navbar.sticky {
     flex-grow: 1;
 }
 
-.work-category {
+.work-category, .service-number {
     display: inline-block;
-    padding: 0.4rem 1rem;
-    background: var(--accent-color);
-    color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent-color);
+    background: var(--current-overlay);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
     letter-spacing: 0.5px;
-    text-transform: uppercase;
-    border-radius: 4px;
-    margin-bottom: 1rem;
     align-self: flex-start;
-    transition: all 0.3s ease;
 }
 
 .work-content h3 {
@@ -804,36 +765,28 @@ html body .navbar.sticky {
 }
 
 .work-link {
-    display: inline-flex;
-    align-items: center;
-    color: var(--accent-color);
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    margin-top: auto;
-    align-self: flex-start;
-    position: relative;
-    padding-bottom: 2px;
-}
-
-.work-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
+    display: inline-block;
+    padding: 0.4rem 1rem;
     background: var(--accent-color);
-    transition: width 0.3s ease;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    align-self: flex-start;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin-top: auto;
 }
 
-.work-link:hover::after {
-    width: 100%;
-}
+
 
 .work-link i {
     margin-left: 0.5rem;
     transition: transform 0.3s ease;
+    display: inline-block;
 }
 
 .work-link:hover i {
@@ -842,26 +795,18 @@ html body .navbar.sticky {
 
 /* Testimonials Section */
 .testimonials {
-    padding: 6rem 1.5rem;
+    padding: 0 1.5rem;
     background: var(--current-bg);
     position: relative;
     overflow: hidden;
 }
 
-.testimonials::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--current-border), transparent);
-}
+
 
 .testimonials-container {
     position: relative;
     margin: 0 auto;
-    padding: 1rem 0 3rem;
+    padding: 0;
     overflow: hidden;
     outline: none;
     max-width: 1200px;
@@ -998,13 +943,14 @@ html body .navbar.sticky {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: var(--current-border);
+    background: var(--bg-color);
     cursor: pointer;
     transition: all 0.3s ease;
+    border: 1px solid #aaa;
 }
 
 .testimonial-dot.active {
-    background: var(--accent-color);
+    background: var(--bg-color);
     transform: scale(1.2);
 }
 
@@ -1031,13 +977,13 @@ html body .navbar.sticky {
     }
     
     .testimonials-container {
-        padding: 2rem 0 4rem;
+        padding: 0;
     }
 }
 
 @media (min-width: 1024px) {
     .testimonials-container {
-        padding: 3rem 0 5rem;
+        padding: 0;
     }
 }
 
@@ -1054,20 +1000,12 @@ html body .navbar.sticky {
 
 /* About Section */
 .about {
-    padding: 6rem 0;
+    padding: 0 0;
     background: var(--current-bg);
     position: relative;
 }
 
-.about::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--current-border), transparent);
-}
+
 
 .section-header {
     text-align: center;

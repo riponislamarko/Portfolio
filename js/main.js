@@ -291,68 +291,8 @@ function initTestimonialCarousel() {
  * Initialize hover effects for work items
  */
 function initWorkItemHover() {
-    const workItems = document.querySelectorAll('.work-item');
-    
-    // Function to handle hover effect for a single item
-    const setupHoverEffect = (item) => {
-        const imageContainer = item.querySelector('.work-image-container, .work-image').parentElement;
-        const image = item.querySelector('.work-image');
-        
-        if (!imageContainer || !image) return;
-        
-        // Make sure the image is loaded before calculating dimensions
-        const img = new Image();
-        img.src = image.src;
-        
-        img.onload = () => {
-            // Calculate the scrollable height
-            const scrollableHeight = img.height - imageContainer.offsetHeight;
-            
-            // Only add hover effect if the image is taller than its container
-            if (scrollableHeight > 0) {
-                // Set initial styles
-                image.style.willChange = 'transform';
-                image.style.transform = 'translateY(0)';
-                
-                // Mouse enter handler
-                item.addEventListener('mouseenter', () => {
-                    // Reset transform first to handle quick re-hovers
-                    image.style.transition = 'none';
-                    image.style.transform = 'translateY(0)';
-                    
-                    // Force reflow
-                    void image.offsetWidth;
-                    
-                    // Start the scroll animation
-                    image.style.transition = 'transform 8s ease-in-out';
-                    image.style.transform = `translateY(calc(-${scrollableHeight}px))`;
-                });
-                
-                // Mouse leave handler
-                item.addEventListener('mouseleave', () => {
-                    // Smoothly return to top
-                    image.style.transition = 'transform 0.5s ease-out';
-                    image.style.transform = 'translateY(0)';
-                });
-                
-                // Reset transform after animation completes
-                image.addEventListener('transitionend', (e) => {
-                    if (e.propertyName === 'transform' && !item.matches(':hover')) {
-                        image.style.transition = 'none';
-                        image.style.transform = 'translateY(0)';
-                    }
-                });
-            }
-        };
-    };
-    
-    // Set up hover effect for each work item
-    workItems.forEach(setupHoverEffect);
-    
-    // Re-initialize when images are loaded (in case they load after the script runs)
-    window.addEventListener('load', () => {
-        workItems.forEach(setupHoverEffect);
-    });
+    // No hover effects needed - function kept for future use if needed
+    return;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -595,36 +535,6 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Simple image scrolling fix
-    function fixImageScrolling() {
-        const workItems = document.querySelectorAll('.work-item');
-        
-        workItems.forEach(item => {
-            const image = item.querySelector('.work-image');
-            if (!image) return;
-            
-            // Wait for image to load
-            if (image.complete) {
-                checkImageHeight(item, image);
-            } else {
-                image.addEventListener('load', () => {
-                    checkImageHeight(item, image);
-                });
-            }
-        });
-    }
-    
-    function checkImageHeight(item, image) {
-        const containerHeight = 240; // Fixed container height
-        const imageHeight = image.naturalHeight;
-        
-        // If image is shorter than container, disable scrolling
-        if (imageHeight <= containerHeight) {
-            item.classList.add('no-scroll');
-        }
-    }
-    
-    // Initialize image scrolling fix
-    fixImageScrolling();
+
 
 });
