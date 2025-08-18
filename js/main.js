@@ -331,50 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Theme Toggle Functionality
-    const themeToggle = document.getElementById('themeToggle');
-    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-    
-    // Set initial theme based on user preference or system setting
-    const currentTheme = localStorage.getItem('theme') || 
-                        (prefersDarkScheme.matches ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    
-    // Set initial button state
-    if (themeToggle) {
-        themeToggle.setAttribute('aria-label', `Switch to ${currentTheme === 'light' ? 'dark' : 'light'} mode`);
-        
-        // Toggle theme when button is clicked
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            // Update button state
-            themeToggle.setAttribute('aria-label', `Switch to ${newTheme === 'light' ? 'dark' : 'light'} mode`);
-        });
-    }
-    
-    // Listen for system theme changes (only if no theme is set in localStorage)
-    const handleSystemThemeChange = (e) => {
-        if (!localStorage.getItem('theme')) {
-            const newTheme = e.matches ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            if (themeToggle) {
-                themeToggle.setAttribute('aria-label', `Switch to ${newTheme === 'light' ? 'dark' : 'light'} mode`);
-            }
-        }
-    };
-    
-    // Add event listener for system theme changes
-    if (prefersDarkScheme.addEventListener) {
-        prefersDarkScheme.addEventListener('change', handleSystemThemeChange);
-    } else {
-        // For older browsers
-        prefersDarkScheme.addListener(handleSystemThemeChange);
-    }
+    // Force dark theme (site is full dark only)
+    document.documentElement.setAttribute('data-theme', 'dark');
 
 
     // Mobile Navigation Toggle
@@ -423,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLinks = document.querySelectorAll('.nav-menu .nav-link');
 
     const highlightNav = () => {
-        let current = '';
+        let currentSectionId = null;
         const headerOffset = document.querySelector('.navbar').offsetHeight;
         const scrollPosition = window.pageYOffset + headerOffset + 100; // Better offset
 
@@ -431,18 +389,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
             const sectionBottom = sectionTop + sectionHeight;
-            
             if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                current = section.getAttribute('id');
+                currentSectionId = section.getAttribute('id');
             }
         });
 
+        // If no section is in range (e.g., between sections/dividers), clear all actives
+        if (!currentSectionId) {
+            navLinks.forEach(link => link.classList.remove('active'));
+            return;
+        }
+
+        const targetHref = `#${currentSectionId}`;
         navLinks.forEach(link => {
             const href = link.getAttribute('href');
-            if (href.includes(current)) {
-                if (!link.classList.contains('active')) {
-                    link.classList.add('active');
-                }
+            if (href === targetHref) {
+                link.classList.add('active');
             } else {
                 link.classList.remove('active');
             }
