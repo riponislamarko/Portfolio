@@ -1,25 +1,44 @@
 // Add RGB values for the accent color
 const root = document.documentElement;
-root.style.setProperty('--accent-rgb', '13, 110, 253'); // Bootstrap primary color RGB
+root.style.setProperty('--accent-rgb', '13, 110, 253');
 
-// Infinite Brands Carousel
+// Cache DOM elements
+const navbar = document.querySelector('.navbar');
+const navToggle = document.getElementById('navToggle');
+const navMenu = document.getElementById('navMenu');
+const navLinks = document.querySelectorAll('.nav-menu .nav-link');
+const sections = document.querySelectorAll('section[id]');
+const contactForm = document.getElementById('contactForm');
+
+// Optimized Brands Carousel with reduced performance impact
 function initBrandsCarousel() {
     const track = document.querySelector('.brands-track');
     if (!track) return;
 
     const items = Array.from(track.children);
+    if (items.length === 0) return;
+
     const itemWidth = items[0].offsetWidth + 64; // 64px is the gap (4rem)
     const totalWidth = itemWidth * (items.length / 2); // Since we duplicated items
     let currentPosition = 0;
     let animationId;
-    let speed = 1; // Pixels per frame
+    let speed = 0.5; // Reduced speed for better performance
     let isPaused = false;
+    let isVisible = true;
 
-    // Set initial position
-    track.style.transform = `translateX(0)`;
+    // Check if element is in viewport
+    const isInViewport = (element) => {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    };
 
     function animate() {
-        if (isPaused) {
+        if (isPaused || !isVisible) {
             animationId = requestAnimationFrame(animate);
             return;
         }
@@ -38,21 +57,25 @@ function initBrandsCarousel() {
     // Pause on hover
     track.addEventListener('mouseenter', () => {
         isPaused = true;
-        track.style.transition = 'transform 0.3s ease';
     });
 
     track.addEventListener('mouseleave', () => {
         isPaused = false;
-        track.style.transition = 'transform 0.1s linear';
-        if (!animationId) {
-            animationId = requestAnimationFrame(animate);
-        }
     });
+
+    // Pause when not visible
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            isVisible = entry.isIntersecting;
+        });
+    }, { threshold: 0.1 });
+
+    observer.observe(track);
 
     // Start animation
     animationId = requestAnimationFrame(animate);
 
-    // Handle window resize
+    // Handle window resize with debouncing
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
@@ -65,15 +88,11 @@ function initBrandsCarousel() {
             currentPosition = progress * newTotalWidth;
             
             track.style.transform = `translateX(${currentPosition}px)`;
-            
-            // Update dimensions
-            itemWidth = newItemWidth;
-            totalWidth = newTotalWidth;
         }, 100);
     });
 }
 
-// Initialize Testimonial Carousel
+// Optimized Testimonial Carousel
 function initTestimonialCarousel() {
     const container = document.querySelector('.testimonials-container');
     const track = document.querySelector('.testimonials-track');
@@ -83,7 +102,6 @@ function initTestimonialCarousel() {
     const nextBtn = document.querySelector('.testimonial-nav.next');
     
     if (!container || !items.length || !prevBtn || !nextBtn) {
-        console.log('Missing elements:', { container, items: items.length, prevBtn, nextBtn });
         return;
     }
     
@@ -92,6 +110,7 @@ function initTestimonialCarousel() {
     
     let currentIndex = 0;
     let isAnimating = false;
+    let autoScrollInterval;
     
     // Calculate how many items to show based on screen size
     function getItemsPerView() {
@@ -101,15 +120,11 @@ function initTestimonialCarousel() {
         return 3;
     }
     
-    // Get unique testimonial count (half of total since we have duplicates)
     const uniqueTestimonialCount = items.length / 2;
     const itemsPerView = getItemsPerView();
     
-    // For 3 items, we only need 1 slide (show all at once)
-    // For 2 items, we need 2 slides (show 2, then slide to show the 3rd + 1st)
-    // For 1 item, we need 3 slides (one for each testimonial)
-    const totalSlides = uniqueTestimonialCount;
-    for (let i = 0; i < totalSlides; i++) {
+    // Create dots
+    for (let i = 0; i < uniqueTestimonialCount; i++) {
         const dot = document.createElement('button');
         dot.classList.add('testimonial-dot');
         if (i === 0) dot.classList.add('active');
@@ -118,24 +133,18 @@ function initTestimonialCarousel() {
         dotsContainer.appendChild(dot);
     }
     
-    // Get dots after they're created
     const dots = document.querySelectorAll('.testimonial-dot');
     
     // Update active dot and navigation state
     function updateUI() {
-        const dots = document.querySelectorAll('.testimonial-dot');
-        
-        // Update dots
         dots.forEach((dot, i) => {
             dot.classList.toggle('active', i === currentIndex);
             dot.setAttribute('aria-current', i === currentIndex ? 'true' : 'false');
         });
         
-        // Navigation buttons are always enabled for infinite scroll
         prevBtn.disabled = isAnimating;
         nextBtn.disabled = isAnimating;
         
-        // Add visual feedback for disabled state
         prevBtn.style.opacity = prevBtn.disabled ? '0.5' : '1';
         nextBtn.style.opacity = nextBtn.disabled ? '0.5' : '1';
     }
@@ -146,7 +155,7 @@ function initTestimonialCarousel() {
         
         isAnimating = true;
         
-        // Handle infinite loop - if we go beyond, wrap to beginning
+        // Handle infinite loop
         if (index >= uniqueTestimonialCount) {
             currentIndex = 0;
         } else if (index < 0) {
@@ -155,17 +164,13 @@ function initTestimonialCarousel() {
             currentIndex = index;
         }
         
-        // Calculate scroll position
-        // Each testimonial takes up (100% / itemsPerView) of the container width
         const containerWidth = container.offsetWidth;
         const slideWidth = containerWidth / itemsPerView;
         const scrollPosition = currentIndex * slideWidth;
         
-        // Use CSS transform for smoother animation
         track.style.transition = instant ? 'none' : 'transform 0.5s ease-in-out';
         track.style.transform = `translateX(-${scrollPosition}px)`;
         
-        // Handle animation end
         if (!instant) {
             const onTransitionEnd = () => {
                 isAnimating = false;
@@ -173,7 +178,6 @@ function initTestimonialCarousel() {
             };
             track.addEventListener('transitionend', onTransitionEnd, { once: true });
             
-            // Fallback timeout in case transitionend doesn't fire
             setTimeout(() => {
                 isAnimating = false;
             }, 600);
@@ -194,31 +198,26 @@ function initTestimonialCarousel() {
     }
     
     // Event listeners for arrow buttons
-    if (nextBtn && prevBtn) {
-        nextBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            goToNext();
-        });
-        
-        prevBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            goToPrev();
-        });
-    }
+    nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        goToNext();
+    });
+    
+    prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        goToPrev();
+    });
     
     // Dot navigation
-    function setupDotNavigation() {
-        const dots = document.querySelectorAll('.testimonial-dot');
-        dots.forEach(dot => {
-            dot.addEventListener('click', (e) => {
-                e.preventDefault();
-                const index = parseInt(dot.dataset.index);
-                if (index !== currentIndex) {
-                    scrollToIndex(index);
-                }
-            });
+    dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            e.preventDefault();
+            const index = parseInt(dot.dataset.index);
+            if (index !== currentIndex) {
+                scrollToIndex(index);
+            }
         });
-    }
+    });
     
     // Handle keyboard navigation
     container.addEventListener('keydown', (e) => {
@@ -237,44 +236,37 @@ function initTestimonialCarousel() {
         }
     });
     
-    // Auto-scroll with proper looping
-    let autoScroll = setInterval(() => {
-        goToNext();
-    }, 5000);
+    // Auto-scroll with visibility check
+    function startAutoScroll() {
+        autoScrollInterval = setInterval(() => {
+            goToNext();
+        }, 5000);
+    }
     
-    // Pause auto-scroll on hover
-    const pauseAutoScroll = () => {
-        clearInterval(autoScroll);
-    };
+    function stopAutoScroll() {
+        clearInterval(autoScrollInterval);
+    }
     
-    const resumeAutoScroll = () => {
-        clearInterval(autoScroll);
-        autoScroll = setInterval(goToNext, 5000);
-    };
-    
-    container.addEventListener('mouseenter', pauseAutoScroll);
-    container.addEventListener('focusin', pauseAutoScroll);
-    container.addEventListener('mouseleave', resumeAutoScroll);
+    // Pause auto-scroll on hover/focus
+    container.addEventListener('mouseenter', stopAutoScroll);
+    container.addEventListener('focusin', stopAutoScroll);
+    container.addEventListener('mouseleave', startAutoScroll);
     container.addEventListener('focusout', (e) => {
         if (!container.contains(e.relatedTarget)) {
-            resumeAutoScroll();
+            startAutoScroll();
         }
     });
     
-    // Handle window resize
+    // Handle window resize with debouncing
     let resizeTimer;
     const handleResize = () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
-            // Recalculate items per view
             const newItemsPerView = getItemsPerView();
             if (newItemsPerView !== itemsPerView) {
-                // Reinitialize if items per view changed
                 initTestimonialCarousel();
                 return;
             }
-            
-            // Just update position for same layout
             scrollToIndex(currentIndex, true);
         }, 250);
     };
@@ -282,89 +274,82 @@ function initTestimonialCarousel() {
     window.addEventListener('resize', handleResize);
     
     // Initialize
-    setupDotNavigation();
     scrollToIndex(0, true);
     updateUI();
+    startAutoScroll();
 }
 
-/**
- * Initialize hover effects for work items
- */
-function initWorkItemHover() {
-    // No hover effects needed - function kept for future use if needed
-    return;
+// Optimized scroll handling with throttling
+let ticking = false;
+let lastScrollY = window.pageYOffset;
+
+function updateOnScroll() {
+    highlightNav();
+    updateHeaderBackground();
+    ticking = false;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize work item hover effects
-    initWorkItemHover();
-    
-    // Initialize carousels
-    const initCarousels = () => {
-        initBrandsCarousel();
-        initTestimonialCarousel();
-    };
-    
-    // Initialize immediately
-    initCarousels();
-    
-    // Re-initialize after a short delay to ensure proper rendering
-    setTimeout(initCarousels, 500);
+function requestTick() {
+    if (!ticking) {
+        requestAnimationFrame(updateOnScroll);
+        ticking = true;
+    }
+}
 
-    // Mouse effect for service items
-    const serviceItems = document.querySelectorAll('.service-item');
-    
-    serviceItems.forEach(item => {
-        item.addEventListener('mousemove', (e) => {
-            const rect = item.getBoundingClientRect();
-            const x = e.clientX - rect.left; // x position within the element
-            const y = e.clientY - rect.top;  // y position within the element
-            
-            item.style.setProperty('--mouse-x', `${x}px`);
-            item.style.setProperty('--mouse-y', `${y}px`);
-        });
-        
-        // Reset position when mouse leaves
-        item.addEventListener('mouseleave', () => {
-            item.style.removeProperty('--mouse-x');
-            item.style.removeProperty('--mouse-y');
-        });
+// Enhanced navigation highlighting
+function highlightNav() {
+    if (!navLinks.length || !sections.length) return;
+
+    let currentSectionId = null;
+    const headerOffset = navbar ? navbar.offsetHeight : 0;
+    const scrollPosition = window.pageYOffset + headerOffset + 100;
+
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionBottom = sectionTop + sectionHeight;
+        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+            currentSectionId = section.getAttribute('id');
+        }
     });
-    
-    // Force dark theme (site is full dark only)
-    document.documentElement.setAttribute('data-theme', 'dark');
 
-
-    // Mobile Navigation Toggle
-    const navToggle = document.getElementById('navToggle');
-    const navMenu = document.getElementById('navMenu');
-
-    if (navToggle && navMenu) {
-        navToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            navToggle.classList.toggle('active'); // For styling the burger icon
-        });
-
-        // Close mobile menu when a link is clicked
-        navMenu.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navMenu.classList.contains('active')) {
-                    navMenu.classList.remove('active');
-                    navToggle.classList.remove('active');
-                }
-            });
-        });
+    if (!currentSectionId) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        return;
     }
 
-    // Smooth scrolling for anchor links
+    const targetHref = `#${currentSectionId}`;
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === targetHref) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+// Sticky header background
+function updateHeaderBackground() {
+    if (!navbar) return;
+    
+    if (window.scrollY > 50) {
+        navbar.classList.add('sticky');
+    } else {
+        navbar.classList.remove('sticky');
+    }
+}
+
+// Optimized smooth scrolling
+function initSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
 
-            if (targetElement) {
-                const headerOffset = document.querySelector('.navbar').offsetHeight;
+            if (targetElement && navbar) {
+                const headerOffset = navbar.offsetHeight;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -375,110 +360,64 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+}
 
-    // Enhanced navigation highlighting with smooth transitions
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-menu .nav-link');
+// Mobile navigation toggle
+function initMobileNav() {
+    if (!navToggle || !navMenu) return;
 
-    const highlightNav = () => {
-        let currentSectionId = null;
-        const headerOffset = document.querySelector('.navbar').offsetHeight;
-        const scrollPosition = window.pageYOffset + headerOffset + 100; // Better offset
+    navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active');
+    });
 
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-            const sectionBottom = sectionTop + sectionHeight;
-            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-                currentSectionId = section.getAttribute('id');
+    // Close mobile menu when a link is clicked
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
             }
         });
+    });
+}
 
-        // If no section is in range (e.g., between sections/dividers), clear all actives
-        if (!currentSectionId) {
-            navLinks.forEach(link => link.classList.remove('active'));
-            return;
-        }
+// Contact form handling
+function initContactForm() {
+    if (!contactForm) return;
 
-        const targetHref = `#${currentSectionId}`;
-        navLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href === targetHref) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const formObject = {};
+        formData.forEach((value, key) => {
+            formObject[key] = value;
         });
-    };
 
-    // Throttled scroll event for better performance
-    let ticking = false;
-    const updateNav = () => {
-        highlightNav();
-        updateHeaderBackground();
-        ticking = false;
-    };
+        console.log('Form Data:', formObject);
 
-    const requestTick = () => {
-        if (!ticking) {
-            requestAnimationFrame(updateNav);
-            ticking = true;
+        // Display success message
+        const formContainer = this.parentNode;
+        let successMessage = formContainer.querySelector('.success-message');
+        if (!successMessage) {
+            successMessage = document.createElement('p');
+            successMessage.className = 'success-message';
+            successMessage.textContent = 'Thank you! Your message has been sent.';
+            formContainer.insertBefore(successMessage, this.nextSibling);
         }
-    };
+        
+        this.reset();
 
-    // Sticky header background
-    function updateHeaderBackground() {
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.classList.add('sticky');
-        } else {
-            navbar.classList.remove('sticky');
-        }
-    }
-
-    window.addEventListener('scroll', requestTick, { passive: true });
-    highlightNav(); // Initial call
-    updateHeaderBackground(); // Initial call
-    
-    // Test if header function is working
-    setTimeout(() => {
-        updateHeaderBackground();
-    }, 1000);
-
-    // Contact Form submission
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const formObject = {};
-            formData.forEach((value, key) => {
-                formObject[key] = value;
-            });
-
-            console.log('Form Data:', formObject);
-
-            // Display a success message
-            const formContainer = this.parentNode;
-            let successMessage = formContainer.querySelector('.success-message');
-            if (!successMessage) {
-                successMessage = document.createElement('p');
-                successMessage.className = 'success-message';
-                successMessage.textContent = 'Thank you! Your message has been sent.';
-                formContainer.insertBefore(successMessage, this.nextSibling);
+        setTimeout(() => {
+            if(successMessage) {
+                successMessage.remove();
             }
-            
-            this.reset();
+        }, 5000);
+    });
+}
 
-            setTimeout(() => {
-                if(successMessage) {
-                    successMessage.remove();
-                }
-            }, 5000);
-        });
-    }
-
-    // Simple fade-in animation on scroll
+// Optimized intersection observer for animations
+function initScrollAnimations() {
     const animatedElements = document.querySelectorAll('.service-item, .work-item, .about-content, .contact-content');
 
     const observer = new IntersectionObserver((entries) => {
@@ -489,14 +428,39 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, {
-        threshold: 0.1
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
     });
 
     animatedElements.forEach(el => {
         el.classList.add('fade-in-initial');
         observer.observe(el);
     });
+}
 
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Force dark theme
+    document.documentElement.setAttribute('data-theme', 'dark');
 
+    // Initialize all components
+    initBrandsCarousel();
+    initTestimonialCarousel();
+    initSmoothScrolling();
+    initMobileNav();
+    initContactForm();
+    initScrollAnimations();
 
+    // Initialize scroll handling
+    highlightNav();
+    updateHeaderBackground();
+
+    // Add scroll event listener with throttling
+    window.addEventListener('scroll', requestTick, { passive: true });
+
+    // Re-initialize carousels after a short delay to ensure proper rendering
+    setTimeout(() => {
+        initBrandsCarousel();
+        initTestimonialCarousel();
+    }, 500);
 });
